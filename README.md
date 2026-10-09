@@ -118,7 +118,7 @@ and `rbnx 0.1.0`. You need:
 
 - Docker Engine with the Compose plugin; the current user must be able to run `docker ps`;
 - Node.js 20 or newer, Python 3, and `curl`;
-- a WebGL 2 desktop session for the Web backend;
+- a WebGL 2 desktop session for the Web backend, or `SIM_HEADLESS=1` on a machine without a display;
 - X11/WSLg, hardware OpenGL, and `/dev/dxg` for the native backend;
 - a Robonix source tree and the `rbnx` command;
 - network access to npm, GitHub, and the Playwright browser download service during bootstrap.
@@ -154,8 +154,12 @@ VLM_MODEL=your-model-name
 MUJOCO_RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 # Default simulator backend. Valid values: web, native.
 # SIM_BACKEND=web
-# Native mode opens the MuJoCo viewer unless this is 1.
+# Set 1 on a machine with no display: the native viewer does not open, and the
+# web backend renders in a headless browser instead of a window.
 # SIM_HEADLESS=0
+# Web backend, headless only. 1 renders on the GPU through ANGLE/EGL; 0 falls
+# back to software WebGL, which is far slower. Ignored when SIM_HEADLESS=0.
+# SIM_GPU_HEADLESS=1
 # Native mode rejects software OpenGL unless explicitly disabled.
 # SIM_GPU_REQUIRED=1
 ```

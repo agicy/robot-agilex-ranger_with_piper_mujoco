@@ -110,7 +110,7 @@ ROS 2 <-> WebSocket bridge <-> Web MuJoCo（默认，SPZ/Mesh）
 
 - Docker Engine 和 Compose plugin，当前用户可以执行 `docker ps`；
 - Node.js 20 或更高版本、Python 3 和 `curl`；
-- Web 后端需要支持 WebGL 2 的桌面图形会话；
+- Web 后端需要支持 WebGL 2 的桌面图形会话；无显示器的机器改用 `SIM_HEADLESS=1`；
 - 原生后端需要 X11/WSLg、可用的硬件 OpenGL 和 `/dev/dxg`；
 - 可用的 Robonix 源码树及 `rbnx` 命令；
 - 首次构建时可访问 npm、GitHub 和 Playwright 下载站。
@@ -144,8 +144,11 @@ VLM_MODEL=your-model-name
 MUJOCO_RMW_IMPLEMENTATION=rmw_fastrtps_cpp
 # Default simulator backend. Valid values: web, native.
 # SIM_BACKEND=web
-# Native mode opens the MuJoCo viewer unless this is 1.
+# 无显示器时设为 1：原生查看器不打开，Web 后端改用无头浏览器渲染。
 # SIM_HEADLESS=0
+# 仅 Web 后端且无头时生效。1 表示经 ANGLE/EGL 用 GPU 渲染；0 回退到软件 WebGL，
+# 慢得多。SIM_HEADLESS=0 时该项被忽略。
+# SIM_GPU_HEADLESS=1
 # Native mode rejects software OpenGL unless explicitly disabled.
 # SIM_GPU_REQUIRED=1
 ```
