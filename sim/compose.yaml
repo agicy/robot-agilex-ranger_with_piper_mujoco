@@ -13,6 +13,12 @@ services:
       ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-0}
       RMW_IMPLEMENTATION: ${MUJOCO_RMW_IMPLEMENTATION:-rmw_fastrtps_cpp}
       PYTHONUNBUFFERED: "1"
+      # UDP-only, like the mapping/nav2/scene/explore containers. With SHM on
+      # this side alone, the bridge's /tf (odom->base_link) reaches nobody:
+      # discovery succeeds, data does not. The TF chain then stops at map->odom
+      # and the explore skill waits forever for map->base_link.
+      FASTRTPS_DEFAULT_PROFILES_FILE: /etc/fastrtps_no_shm.xml
     volumes:
+      - ./no_shm_profile.xml:/etc/fastrtps_no_shm.xml:ro
       - ..:/workspace
       - ${ROBONIX_SOURCE_PATH:-/home/cyt/robonix}/pylib:/robonix/pylib:ro
